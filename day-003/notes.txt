@@ -19,14 +19,6 @@ IP-адрес - это адрес здания, а порт это непоср�
 6443 - Kubernetes API Server
 8080/8081 - альтернативные HTTP порты (часто испоьзуются в контейнерах)
 
-sudo -tuln - посмотреть все открытые порты. Небольшая выноска
-*-t — показать только TCP
--u — показать только UDP
--l — только слушающие (listening) порты
--n — показывать числа (порты), а не пытаться резолвить имена сервисов (работает быстрее)
-
-sudo -tulnp - добавляется флаг -p, который позволяет смотреть еще и имена процессов
-
 DNS - Domain Name System - буквально телефонная книга, ya.ru → 77.88.55.88, 
 
 nslookup - просто покажет IP
@@ -40,14 +32,6 @@ dig - показывает весь процесс и заголовки отв�
 4XX - ошибка клиента (400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found)
 5XX - ошибка сервера (500 Internal Server Error, 502 Bad Gateway, 503 Service Unvaliable)
 
-инструмент curl: 
-curl https://github.com              # GET-запрос, вывести тело ответа
-curl -I https://github.com           # Только заголовки (HEAD-запрос)
-curl -v https://github.com           # Verbose — показать весь процесс, включая TLS handshake
-curl -X POST https://api.example.com # Указать метод (POST, PUT, DELETE)
-curl -d "data=value" https://...     # Отправить данные (POST)
-curl -H "Authorization: Bearer TOKEN" https://... # Добавить заголовок
-
 firewall - межсетевой статус, который фильтрует сетевой трафик на основе некоторых правил
 
 sudo ufw status              # Проверить статус
@@ -57,24 +41,8 @@ sudo ufw deny 3306           # Явно запретить доступ к БД 
 sudo ufw enable              # Включить фаервол (потребует подтверждения)
 sudo ufw reset               # Сбросить все правила (если что-то сломал)
 
-правила:
-sudo ufw allow 22/tcp            # Разрешить SSH (ВСЕГДА делай это первым!)
-sudo ufw allow 80,443/tcp        # Разрешить HTTP и HTTPS
-sudo ufw deny 3306               # Запретить MySQL
-sudo ufw allow from 192.168.1.0/24 to any port 22  # Разрешить SSH только из подсети
-sudo ufw delete allow 80         # Удалить правило
-
 iptables — это низкоуровневый инструмент, на котором работает ufw.
 
 ufw - uncomplicated firewall  Упрощает настройку сложного стандартного пакетного фильтра iptables или nftables, заменяя длинные команды понятным интерфейсом.
 
-Базовая структура: 
-iptables -L                      # Показать все правила
-iptables -A INPUT -p tcp --dport 22 -j ACCEPT  # Добавить правило
-iptables -D INPUT 1              # Удалить правило по номеру
-
 Главное правило безопасности - запретить все то, что явно не разрешено
-
-Logging: Включи логирование заблокированных пакетов для анализа атак
-sudo ufw logging on
-
